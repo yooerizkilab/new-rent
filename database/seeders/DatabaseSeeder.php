@@ -14,16 +14,16 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UsersTableSeeder::class,
-            CarsTableSeeder::class,
-            CustomersTableSeeder::class,
-            BookingsTableSeeder::class,
-            TransactionsTableSeeder::class,
-            MaintenanceTableSeeder::class,
-            ReviewsTableSeeder::class,
-            PromotionsTableSeeder::class,
-            DriversTableSeeder::class,
-            CarDriversTableSeeder::class,
-            DeliveryLocationsTableSeeder::class,
+            // CarsTableSeeder::class,
+            // CustomersTableSeeder::class,
+            // BookingsTableSeeder::class,
+            // TransactionsTableSeeder::class,
+            // MaintenanceTableSeeder::class,
+            // ReviewsTableSeeder::class,
+            // PromotionsTableSeeder::class,
+            // DriversTableSeeder::class,
+            // CarDriversTableSeeder::class,
+            // DeliveryLocationsTableSeeder::class,
         ]);
     }
 }

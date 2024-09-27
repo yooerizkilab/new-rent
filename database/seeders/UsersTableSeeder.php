@@ -41,6 +41,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Admin User',
             'last_name' => 'Admin User',
             'email' => 'admin@example.com',
+            'tlpn' => '081234567543',
             'password' => Hash::make('password'), // Password bisa diubah sesuai kebutuhan
         ]);
 
@@ -49,6 +50,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Operator User',
             'last_name' => 'Operator User',
             'email' => 'operator@example.com',
+            'tlpn' => '081234567890',
             'password' => Hash::make('password'), // Password bisa diubah sesuai kebutuhan
         ]);
 

@@ -28,8 +28,8 @@
     </div>
 
     <!-- Nav Item - Mobil -->
-    <li class="nav-item {{ Nav::isRoute('admin.cars') }}">
-        <a class="nav-link" href="{{ route('admin.cars') }}">
+    <li class="nav-item {{ Nav::isRoute('admin.test') }}">
+        <a class="nav-link" href="{{ route('admin.test') }}">
             <i class="fas fa-fw fa-car"></i>
             <span>{{ __('Mobil') }}</span>
         </a>

@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Contracts\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +114,10 @@ Route::group(['middleware' => ['auth', 'role:administrator|operator'], 'prefix' 
     Route::get('/deliveries/{delivery}/edit', 'DeliveryLocationController@edit')->name('deliveries.edit');
     Route::put('/deliveries/{delivery}', 'DeliveryLocationController@update')->name('deliveries.update');
     Route::delete('/deliveries/{delivery}', 'DeliveryLocationController@destroy')->name('deliveries.destroy');
+
+    // test feature
+    Route::get('/test', 'TestingController@index')->name('test');
+    Route::post('/test', 'TestingController@store')->name('test.store');
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'settings', 'as' => 'settings.'], function () {
