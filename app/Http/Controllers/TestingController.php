@@ -41,7 +41,7 @@ class TestingController extends Controller
             $history->proyek = $request->proyek;
             $history->save();
 
-            return response()->json(['success' => true]);
+            return response()->json(['success' => true, 'message' => 'Item ditemukan.']);
         } else {
             // Jika item tidak ditemukan
             return response()->json(['success' => false, 'message' => 'Item tidak ditemukan.']);

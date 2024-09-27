@@ -18,7 +18,7 @@
                 <label for="Proyek">Proyek</label>
                 <input type="hidden" id="user_id" value="{{ auth()->user()->id }}">
                 <input type="hidden" id="nama_user" value="{{ auth()->user()->name }}">
-                <input type="hidden" id="no_tlpn" value="{{ auth()->user()->phone }}">
+                <input type="hidden" id="no_tlpn" value="{{ auth()->user()->tlpn }}">
                 <input type="text" id="proyek" class="form-control" placeholder="Masukkan proyek">
             </div>
 
@@ -28,12 +28,15 @@
             </div>
 
             <!-- Display -->
-            {{-- <div id="location"></div> --}}
+            <p></p>
+            <div id="location"></div>
             <div id="address"></div>
             <div id="qr-reader"></div>
-            {{-- <div id="qr-result"></div> --}}
-            
-            <button class="btn btn-primary mt-3" onclick="getLocationAndScanQR()">Go somewhere</button>
+            <div id="qr-result"></div>
+
+            <div class="float-right">
+                <button class="btn btn-primary mt-3" onclick="getLocationAndScanQR()">Get Location</button>
+            </div>
         </div>
     </div>
     
@@ -120,51 +123,70 @@
     }
 
     // Fungsi untuk menyimpan data ke database
-    function saveDataToDatabase(qrCodeMessage, address) {
-        // Ambil data dari session atau elemen HTML
-        const userId = document.getElementById('user_id').value; // contoh id dari input hidden
-        const namaUser = document.getElementById('nama_user').value; // contoh id dari input hidden
-        const noTlpn = document.getElementById('no_tlpn').value; // contoh id dari input hidden
-        const proyek = document.getElementById('proyek').value; // contoh id dari input proyek
+        function saveDataToDatabase(qrCodeMessage, address) {
+            // Ambil data dari session atau elemen HTML
+            const userId = document.getElementById('user_id').value; // contoh id dari input hidden
+            const namaUser = document.getElementById('nama_user').value; // contoh id dari input hidden
+            const noTlpn = document.getElementById('no_tlpn').value; // contoh id dari input hidden
+            const proyek = document.getElementById('proyek').value; // contoh id dari input proyek
 
-        const url = "{{ route('admin.test.store') }}"; // route Laravel untuk menyimpan history
+            const url = "{{ route('admin.test.store') }}"; // route Laravel untuk menyimpan history
 
-        // Tampilkan spinner
-        document.getElementById("spinner").style.display = "block";
+            // Tampilkan spinner
+            document.getElementById("spinner").style.display = "block";
 
-        // Kirim data menggunakan fetch (bisa juga dengan jQuery.ajax)
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                id_user: userId,
-                qr_code: qrCodeMessage,
-                lokasi: address,
-                nama_user: namaUser,
-                no_tlpn_user: noTlpn,
-                proyek: proyek
+            // Kirim data menggunakan fetch
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Token CSRF untuk keamanan
+                },
+                body: JSON.stringify({
+                    id_user: userId,
+                    qr_code: qrCodeMessage, 
+                    lokasi: address,
+                    nama_user: namaUser,
+                    no_tlpn_user: noTlpn,
+                    proyek: proyek
+                })
             })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("Data berhasil disimpan!");
-            } else {
-                alert("Data gagal disimpan: " + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("Terjadi kesalahan dalam menyimpan data.");
-        })
-        .finally(() => {
-            // Sembunyikan spinner
-            document.getElementById("spinner").style.display = "none";
-        });
-    }
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'Data tersimpan',
+                    text: '{{ session('success') ? session('success') : 'Data berhasil disimpan!' }}',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.reload();
+                });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Data gagal disimpan',
+                        text: data.message || 'Terjadi kesalahan saat menyimpan data.',
+                        confirmButtonText: 'Close'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Data gagal disimpan',
+                    text: 'Terjadi kesalahan saat menyimpan data',
+                    confirmButtonText: 'Close'
+                });
+            })
+            .finally(() => {
+                // Sembunyikan spinner
+                document.getElementById("spinner").style.display = "none";
+            });
+        }
+
 
     // Penanganan Error Geolocation
     function showError(error) {
@@ -184,5 +206,6 @@
         }
         document.getElementById("spinner").style.display = "none"; // Sembunyikan spinner jika error
     }
+
 </script>
 @endpush
