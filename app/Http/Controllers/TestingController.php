@@ -10,7 +10,9 @@ class TestingController extends Controller
 {
     public function index()
     {
-        return view('backend.testing.index');
+        $histories = History::all();
+
+        return view('backend.testing.index', compact('histories'));
     }
 
     public function store(Request $request)

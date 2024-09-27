@@ -1,50 +1,108 @@
 @extends('layouts.admin')
 
 @push('css')
-
+<!-- Custom styles for this page -->
+<link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 @endpush
 
 @section('main-content')
-<div class="col-lg-6 mb-4">
 
-    <!-- Illustrations -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-        </div>
-        <div class="card-body">
+<div class="row">
+    <div class="col-lg-6 mb-4">
 
-            <div class="form-group">
-                <label for="Proyek">Proyek</label>
-                <input type="hidden" id="user_id" value="{{ auth()->user()->id }}">
-                <input type="hidden" id="nama_user" value="{{ auth()->user()->name }}">
-                <input type="hidden" id="no_tlpn" value="{{ auth()->user()->tlpn }}">
-                <input type="text" id="proyek" class="form-control" placeholder="Masukkan proyek">
+        <!-- Illustrations -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
             </div>
-
-            <!-- Spinner Loading -->
-            <div id="spinner" style="display:none;">
-                <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fgifs%2Floading-animation-spin-highlights-7528%2F&psig=AOvVaw2uYfqcgodwsqE-ww_d6qYZ&ust=1727406482491000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCJiL_-DQ34gDFQAAAAAdAAAAABAf" alt="Loading...">
-            </div>
-
-            <!-- Display -->
-            <p></p>
-            <div id="location"></div>
-            <div id="address"></div>
-            <div id="qr-reader"></div>
-            <div id="qr-result"></div>
-
-            <div class="float-right">
-                <button class="btn btn-primary mt-3" onclick="getLocationAndScanQR()">Get Location</button>
+            <div class="card-body">
+    
+                <div class="form-group">
+                    <label for="Proyek">Proyek</label>
+                    <input type="hidden" id="user_id" value="{{ auth()->user()->id }}">
+                    <input type="hidden" id="nama_user" value="{{ auth()->user()->name }}">
+                    <input type="hidden" id="no_tlpn" value="{{ auth()->user()->tlpn }}">
+                    <input type="text" id="proyek" class="form-control @error('proyek') is-invalid @enderror" name="proyek" placeholder="Masukkan proyek" required>
+                </div>
+    
+                <!-- Spinner Loading -->
+                <div id="spinner" style="display:none;">
+                    <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fgifs%2Floading-animation-spin-highlights-7528%2F&psig=AOvVaw2uYfqcgodwsqE-ww_d6qYZ&ust=1727406482491000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCJiL_-DQ34gDFQAAAAAdAAAAABAf" alt="Loading...">
+                </div>
+    
+                <!-- Display -->
+                <div id="location"></div>
+                <div class="mb-3" id="address"></div>
+                <div id="qr-reader"></div>
+                <div class="mt-3" id="qr-result"></div>
+    
+                <div class="float-right">
+                    {{-- Button Stop Scanner --}}
+                    {{-- <button class="btn btn-danger mt-3" onclick="stopQrCodeScanner()">Stop Scanner</button> --}}
+                    <button class="btn btn-primary mt-3" onclick="getLocationAndScanQR()">Get Location</button>
+                </div>
             </div>
         </div>
     </div>
-    
-
 </div>
+ <!-- DataTales Example -->
+ <div class="card shadow mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">  
+        <div class="card-header py-3 d-flex justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            <div>
+                <a href="" class="btn btn-info btn-md"><i class="fas fa-file-pdf fa-md white-50"></i> Print PDF</a>
+                <a href="" class="btn btn-success btn-md"><i class="fas fa-file-csv fa-md white-50"></i> Print Excel</a>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name User</th>
+                            <th>No Tlpn</th>
+                            <th>Nama Item</th>
+                            <th>Jenis</th>
+                            <th>Lokasi Item</th>
+                            <th>Proyek</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(count($histories) > 0)
+                            @foreach ($histories as $history)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $history->nama_user }}</td>
+                                    <td>{{ $history->no_tlpn_user }}</td>
+                                    <td>{{ $history->nama_item }}</td>
+                                    <td>{{ $history->jenis_item }}</td>
+                                    <td>{{ $history->lokasi }}</td>
+                                    <td>{{ $history->proyek }}</td>
+                                    <td>{{ $history->created_at->format('d-m-Y') }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
+
+ <!-- Page level plugins -->
+ <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js')}}"></script>
+ <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+ <!-- Page level custom scripts -->
+ <script src="{{ asset('vendor/js/demo/datatables-demo.js')}}"></script>
 
 {{-- QrcodeScanner --}}
 <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.4/html5-qrcode.min.js"></script>
@@ -122,36 +180,42 @@
         });
     }
 
+    // Fungsi stop QR code scanner
+    // function stopQrCodeScanner() {
+    //     const html5QrCode = new Html5Qrcode("qr-reader");
+    //     html5QrCode.stop();
+    // }
+
     // Fungsi untuk menyimpan data ke database
-        function saveDataToDatabase(qrCodeMessage, address) {
-            // Ambil data dari session atau elemen HTML
-            const userId = document.getElementById('user_id').value; // contoh id dari input hidden
-            const namaUser = document.getElementById('nama_user').value; // contoh id dari input hidden
-            const noTlpn = document.getElementById('no_tlpn').value; // contoh id dari input hidden
-            const proyek = document.getElementById('proyek').value; // contoh id dari input proyek
+    function saveDataToDatabase(qrCodeMessage, address) {
+        // Ambil data dari session atau elemen HTML
+        const userId = document.getElementById('user_id').value; // contoh id dari input hidden
+        const namaUser = document.getElementById('nama_user').value; // contoh id dari input hidden
+        const noTlpn = document.getElementById('no_tlpn').value; // contoh id dari input hidden
+        const proyek = document.getElementById('proyek').value; // contoh id dari input proyek
 
-            const url = "{{ route('admin.test.store') }}"; // route Laravel untuk menyimpan history
+        const url = "{{ route('admin.test.store') }}"; // route Laravel untuk menyimpan history
 
-            // Tampilkan spinner
-            document.getElementById("spinner").style.display = "block";
+        // Tampilkan spinner
+        document.getElementById("spinner").style.display = "block";
 
-            // Kirim data menggunakan fetch
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Token CSRF untuk keamanan
-                },
-                body: JSON.stringify({
-                    id_user: userId,
-                    qr_code: qrCodeMessage, 
-                    lokasi: address,
-                    nama_user: namaUser,
-                    no_tlpn_user: noTlpn,
-                    proyek: proyek
-                })
+        // Kirim data menggunakan fetch
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Token CSRF untuk keamanan
+            },
+            body: JSON.stringify({
+                id_user: userId,
+                qr_code: qrCodeMessage, 
+                lokasi: address,
+                nama_user: namaUser,
+                no_tlpn_user: noTlpn,
+                proyek: proyek
             })
-            .then(response => response.json())
+        })
+        .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     Swal.fire({
@@ -186,7 +250,6 @@
                 document.getElementById("spinner").style.display = "none";
             });
         }
-
 
     // Penanganan Error Geolocation
     function showError(error) {
