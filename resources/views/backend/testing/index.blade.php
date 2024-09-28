@@ -11,18 +11,23 @@
     <div class="col-lg-6 mb-4">
 
         <!-- Illustrations -->
-        <div class="card shadow mb-4">
+        <div class="card border-left-primary shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
             </div>
             <div class="card-body">
     
                 <div class="form-group">
-                    <label for="Proyek">Proyek</label>
                     <input type="hidden" id="user_id" value="{{ auth()->user()->id }}">
                     <input type="hidden" id="nama_user" value="{{ auth()->user()->name }}">
                     <input type="hidden" id="no_tlpn" value="{{ auth()->user()->tlpn }}">
+                    <label for="Proyek">Proyek</label>
                     <input type="text" id="proyek" class="form-control @error('proyek') is-invalid @enderror" name="proyek" placeholder="Masukkan proyek" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="qr_code">Jumlah Item</label>
+                    <input type="text" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="1" placeholder="Masukkan Jumlah Item" required>
                 </div>
     
                 <!-- Spinner Loading -->
@@ -66,6 +71,7 @@
                             <th>No Tlpn</th>
                             <th>Nama Item</th>
                             <th>Jenis</th>
+                            <th>Satuan</th>
                             <th>Lokasi Item</th>
                             <th>Proyek</th>
                             <th>Tanggal</th>
@@ -80,6 +86,7 @@
                                     <td>{{ $history->no_tlpn_user }}</td>
                                     <td>{{ $history->nama_item }}</td>
                                     <td>{{ $history->jenis_item }}</td>
+                                    <td>{{ $history->satuan_item }}</td>
                                     <td>{{ $history->lokasi }}</td>
                                     <td>{{ $history->proyek }}</td>
                                     <td>{{ $history->created_at->format('d-m-Y') }}</td>
@@ -193,6 +200,7 @@
         const namaUser = document.getElementById('nama_user').value; // contoh id dari input hidden
         const noTlpn = document.getElementById('no_tlpn').value; // contoh id dari input hidden
         const proyek = document.getElementById('proyek').value; // contoh id dari input proyek
+        const jumlah = document.getElementById('jumlah').value;
 
         const url = "{{ route('admin.test.store') }}"; // route Laravel untuk menyimpan history
 
@@ -212,7 +220,8 @@
                 lokasi: address,
                 nama_user: namaUser,
                 no_tlpn_user: noTlpn,
-                proyek: proyek
+                proyek: proyek,
+                jumlah: jumlah
             })
         })
         .then(response => response.json())

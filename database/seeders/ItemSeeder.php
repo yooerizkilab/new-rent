@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ItemSeeder extends Seeder
 {
@@ -13,52 +14,39 @@ class ItemSeeder extends Seeder
      */
     public function run(): void
     {
+        // Insert dummy data
         DB::table('item')->insert([
             [
-                'no_seri' => 'A12345',
-                'nama' => 'Laptop Dell XPS 13',
+                'no_seri' => Str::upper(Str::random(12)),
+                'gambar' => 'item1.jpg',
+                'nama' => 'Barang 1',
+                'merk' => 'Merk A',
                 'jenis' => 'Elektronik',
-                'grup' => 'Komputer',
-                'satuan' => 'Unit',
-                'kondisi' => 'Baru',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'no_seri' => 'B67890',
-                'nama' => 'Printer HP LaserJet',
-                'jenis' => 'Elektronik',
-                'grup' => 'Perangkat Kantor',
-                'satuan' => 'Unit',
-                'kondisi' => 'Bekas',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'no_seri' => 'C13579',
-                'nama' => 'Proyektor Epson',
-                'jenis' => 'Elektronik',
-                'grup' => 'Peralatan Presentasi',
-                'satuan' => 'Unit',
-                'kondisi' => 'Baru',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'no_seri' => 'D24680',
-                'nama' => 'Meja Kantor',
-                'jenis' => 'Perabotan',
-                'grup' => 'Furnitur',
+                'grup' => 'Gadget',
                 'satuan' => 'Unit',
                 'kondisi' => 'Baik',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'no_seri' => 'E11223',
-                'nama' => 'Kursi Ergonomis',
-                'jenis' => 'Perabotan',
-                'grup' => 'Furnitur',
+                'no_seri' => Str::upper(Str::random(12)),
+                'gambar' => 'item2.jpg',
+                'nama' => 'Barang 2',
+                'merk' => 'Merk B',
+                'jenis' => 'Furnitur',
+                'grup' => 'Peralatan',
+                'satuan' => 'Set',
+                'kondisi' => 'Baik',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'no_seri' => Str::upper(Str::random(12)),
+                'gambar' => 'item3.jpg',
+                'nama' => 'Barang 3',
+                'merk' => 'Merk C',
+                'jenis' => 'Kendaraan',
+                'grup' => 'Transportasi',
                 'satuan' => 'Unit',
                 'kondisi' => 'Baik',
                 'created_at' => now(),
