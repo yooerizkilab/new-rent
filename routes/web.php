@@ -118,6 +118,10 @@ Route::group(['middleware' => ['auth', 'role:administrator|operator'], 'prefix' 
     // test feature
     Route::get('/test', 'TestingController@index')->name('test');
     Route::post('/test', 'TestingController@store')->name('test.store');
+    Route::get('/send-notification', 'TestingController@sendNotification')->name('send-notification');
+    // Route
+    Route::get('/bisnis', 'TestingController@getCustomers')->name('bisnis');
+    Route::post('/sap/logout', 'TestingController@logout')->name('sap.logout');
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'settings', 'as' => 'settings.'], function () {

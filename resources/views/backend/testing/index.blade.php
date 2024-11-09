@@ -49,9 +49,76 @@
             </div>
         </div>
     </div>
+
+    {{-- <div class="col-lg-6 mb-4">
+
+        <!-- Illustrations -->
+        <div class="card border-left-primary shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+            </div>
+            <div class="card-body">
+                <h1>Notifikasi WhatsApp</h1>
+
+                <!-- Tombol untuk mengirim notifikasi -->
+                <a href="{{ route('admin.send-notification') }}" class="btn btn-primary">Kirim Notifikasi</a>
+            
+                <!-- Menampilkan pesan sukses jika notifikasi terkirim -->
+                @if (session('success'))
+                    <p>{{ session('success') }}</p>
+                @endif
+            </div>
+        </div>
+    </div> --}}
+
 </div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">  
+        <div class="card-header py-3 d-flex justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            <div>
+                <a href="" class="btn btn-info btn-md"><i class="fas fa-file-pdf fa-md white-50"></i> Print PDF</a>
+                <form action="{{ route('admin.sap.logout') }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-md"><i class="fas fa-sign-out-alt fa-md white-50"></i> Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <h1>Customer Information</h1>
+
+        <p><strong>Card Code:</strong> {{ $customersId['CardCode'] ?? 'N/A' }}</p>
+        <p><strong>Card Name:</strong> {{ $customersId['CardName'] ?? 'N/A' }}</p>
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>CardCode</th>
+                            <th>CardName</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{-- @foreach ($customers as $customer)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $customer['CardCode'] }}</td>
+                                <td>{{ $customer['CardName'] }}</td>
+                            </tr>
+                        @endforeach --}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
  <!-- DataTales Example -->
- <div class="card shadow mb-4">
+{{-- <div class="card shadow mb-4">
     <div class="card border-left-primary shadow h-100 py-2">  
         <div class="card-header py-3 d-flex justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
@@ -63,7 +130,7 @@
         
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -98,11 +165,16 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 @endsection
 
 @push('scripts')
+{{-- <script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable();
+    });
+</script> --}}
 
  <!-- Page level plugins -->
  <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js')}}"></script>
@@ -112,10 +184,10 @@
  <script src="{{ asset('vendor/js/demo/datatables-demo.js')}}"></script>
 
 {{-- QrcodeScanner --}}
-<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.4/html5-qrcode.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.4/html5-qrcode.min.js"></script> --}}
 
 <!-- QR Code Scanner -->
-<script>
+{{-- <script>
     function getLocationAndScanQR() {
         // Tampilkan spinner
         document.getElementById("spinner").style.display = "block";
@@ -279,5 +351,5 @@
         document.getElementById("spinner").style.display = "none"; // Sembunyikan spinner jika error
     }
 
-</script>
+</script> --}}
 @endpush

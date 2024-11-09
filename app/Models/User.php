@@ -29,4 +29,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function routeNotificationForQontak()
+    {
+        // Return nomor telepon pengguna, sesuai format Qontak
+        return '+62895341341001'; // Contoh nomor telepon
+    }
 }

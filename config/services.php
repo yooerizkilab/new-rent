@@ -31,4 +31,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'qontak' => [
+        'username' => env('QONTAK_USERNAME', null),
+        'password' => env('QONTAK_PASSWORD', null),
+        'client_id' => env('QONTAK_CLIENT_ID', null),
+        'client_secret' => env('QONTAK_CLIENT_SECRET', null),
+    ],
+
 ];

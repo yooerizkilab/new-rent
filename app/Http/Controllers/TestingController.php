@@ -5,14 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\History;
 use App\Models\Item;
+use App\Models\User;
+use App\Notifications\InvoicePaid;
+use App\Services\SAPService;
 
 class TestingController extends Controller
 {
+    protected $sapService;
+
+    public function __construct(SAPService $sapService)
+    {
+        $this->middleware('auth');
+        $this->sapService = $sapService;
+    }
+
     public function index()
     {
+        $item = Item::all();
         $histories = History::all();
 
-        return view('backend.testing.index', compact('histories'));
+        return view('backend.testing.index', compact('histories', 'item'));
     }
 
     public function store(Request $request)
@@ -24,7 +36,7 @@ class TestingController extends Controller
         // ]);
 
         // Cari item berdasarkan QR code
-        $item = Item::where('no_seri', $request->qr_code)->first();
+        $item = Item::where('code', $request->qr_code)->first();
 
         if ($item) {
             // Jika item ditemukan, simpan data ke tabel history
@@ -76,5 +88,62 @@ class TestingController extends Controller
         }
 
         return $data;
+    }
+
+    public function sendNotification()
+    {
+        // Temukan user yang akan dikirimi notifikasi
+        $user = User::find(1); // Misalnya user dengan ID 1
+
+        // Kirim notifikasi ke user
+        $user->notify(new InvoicePaid());
+
+        // Redirect kembali dengan pesan sukses
+        return back()->with('success', 'Notifikasi berhasil dikirim!');
+    }
+    // $endpoint = '$crossjoin(Orders,SalesPersons,PaymentTermsTypes)';
+    // $param = [
+    //     '$expand' => 'Orders($select=DocEntry,DocNum,DocDate,CardCode,CardName,NumAtCard,Comments,DocTotal,SalesPersonCode,FederalTaxID,DocTime),SalesPersons($select=SalesEmployeeCode,SalesEmployeeName),PaymentTermsTypes($select=GroupNumber,PaymentTermsGroupName)',
+    //     '$filter' => 'Orders/SalesPersonCode eq SalesPersons/SalesEmployeeCode and Orders/PaymentGroupCode eq PaymentTermsTypes/GroupNumber and Orders/DocDate gt \'2024-06-30\' and Orders/CancelStatus eq \'csNo\'',
+    //     '$orderby' => 'Orders/DocEntry desc'
+    // ];
+    public function getCustomers()
+    {
+
+        $endpoint = 'BusinessPartners';
+        $param = [
+            '$select' => 'CardCode,CardName',  // Field yang ingin dipilih
+        ];
+        $response = $this->sapService->get($endpoint, $param);
+
+        return view('backend.testing.index', compact('customers'));
+    }
+
+    public function getCustomersId()
+    {
+        $id = 'VL00000116'; // asumsi get data by id parameter
+        $endpoint = 'BusinessPartners';
+        $param = [
+            '$select' => 'CardCode,CardName',  // Field yang ingin dipilih
+        ];
+
+        // Mengambil data dari servis
+        $response = $this->sapService->getById($endpoint, $id, $param);
+        $customersId = $response;
+
+        return $customersId;
+        return view('backend.testing.index', compact('customersId'));
+    }
+
+    public function logout()
+    {
+        try {
+            // Memanggil fungsi logout dari service
+            $this->sapService->logout();
+            // response()->json(['message' => 'Logout berhasil dari SAP B1'], 200);
+            return redirect()->back()->with('success', 'Logout berhasil dari SAP B1');
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Gagal logout dari SAP B1', 'error' => $e->getMessage()], 500);
+        }
     }
 }

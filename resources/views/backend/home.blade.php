@@ -172,7 +172,10 @@
                     <div class="card bg-danger text-white shadow">
                         <div class="card-body">
                             Danger
-                            <div class="text-white-50 small">#e74a3b</div>
+                            <form action="{{ route('admin.sap.logout') }}" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-danger btn-md"><i class="fas fa-sign-out-alt fa-md white-50"></i> Logout</button>
+                            </form>
                         </div>
                     </div>
                 </div>

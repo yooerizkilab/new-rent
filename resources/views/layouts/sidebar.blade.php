@@ -28,6 +28,14 @@
     </div>
 
     <!-- Nav Item - Mobil -->
+    <li class="nav-item {{ Nav::isRoute('admin.bisnis') }}">
+        <a class="nav-link" href="{{ route('admin.bisnis') }}">
+            <i class="fas fa-fw fa-car"></i>
+            <span>{{ __('Business Partners') }}</span>
+        </a>
+    </li>
+
+    <!-- Nav Item - Mobil -->
     <li class="nav-item {{ Nav::isRoute('admin.test') }}">
         <a class="nav-link" href="{{ route('admin.test') }}">
             <i class="fas fa-fw fa-car"></i>
